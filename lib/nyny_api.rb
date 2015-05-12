@@ -1,5 +1,11 @@
 require "nyny_api/version"
 
 module NynyApi
-  # Your code goes here...
+  require 'nyny'
+
+  class HackerNews < NYNY::App
+    get '/' do
+      'Hello from hackernews'
+    end
+  end
 end
