@@ -1,11 +1,20 @@
-require 'minitest_helper'
+require 'minitest/autorun'
+require 'rack/test'
+require 'rack/lint'
+require 'nyny_api'
 
 class TestNynyApi < Minitest::Test
-  def test_that_it_has_a_version_number
-    refute_nil ::NynyApi::VERSION
+  include Rack::Test::Methods
+  include NynyApi
+
+  def app
+    Rack::Lint.new(HackerNews.new)
   end
 
   def test_it_does_something_useful
-    assert false
+    get '/'
+
+    assert last_response.ok?
+    assert_equal 'Hello from hackernews', last_response.body
   end
 end
