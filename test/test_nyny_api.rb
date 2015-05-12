@@ -43,6 +43,22 @@ class TestNynyApi < Minitest::Test
     assert_equal 'Lorem ipsum', response['title']
   end
 
+  def test_success_stories_post
+    post '/stories', { title: 'Funny title', url: 'http://www.funny.com' }.to_json
+    response = JSON.parse last_response.body
+
+    assert_equal 201, last_response.status
+    assert_equal 'Funny title', response['title']
+  end
+
+  def test_fail_stories_post
+    post '/stories', { title: 'Funny title' }.to_json
+    response = JSON.parse last_response.body
+
+    assert_equal 422, last_response.status
+    assert_equal "can't be blank", response['url'].first
+  end
+
   def teardown
     DatabaseCleaner.clean
   end

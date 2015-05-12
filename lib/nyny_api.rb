@@ -19,8 +19,16 @@ module NynyApi
       Story.find(params[:id]).to_json
     end
 
-    post 'stories' do
+    post '/stories' do
+      story = Story.new(JSON.parse request.body.read)
 
+      if story.save
+        status 201
+        story.to_json
+      else
+        status 422
+        story.errors.to_json
+      end
     end
 
     patch '/stories/:id' do
