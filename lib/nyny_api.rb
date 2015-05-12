@@ -32,11 +32,18 @@ module NynyApi
     end
 
     patch '/stories/:id' do
+      story = Story.find(params[:id])
 
+      if story.update(JSON.parse request.body.read)
+        story.to_json
+      else
+        status 422
+        story.errors.to_json
+      end
     end
 
     get '/stories/:id/url' do
-
+      redirect Story.find(params[:id]).url, 303
     end
   end
 end

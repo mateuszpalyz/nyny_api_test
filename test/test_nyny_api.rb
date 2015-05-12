@@ -59,6 +59,28 @@ class TestNynyApi < Minitest::Test
     assert_equal "can't be blank", response['url'].first
   end
 
+  def test_stories_update_success
+    patch '/stories/1', { title: 'Updated shiny title'}.to_json
+    response = JSON.parse last_response.body
+
+    assert last_response.ok?
+    assert_equal 'Updated shiny title', response['title']
+  end
+
+  def test_stories_update_fail
+    patch '/stories/1', { title: nil}.to_json
+    response = JSON.parse last_response.body
+
+    assert_equal 422, last_response.status
+    assert_equal "can't be blank", response['title'].first
+  end
+
+  def test_redirect_to_a_given_story
+    get '/stories/1/url'
+
+    assert_equal 303, last_response.status
+  end
+
   def teardown
     DatabaseCleaner.clean
   end
