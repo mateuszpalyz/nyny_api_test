@@ -43,7 +43,7 @@ class TestNynyApi < Minitest::Test
     assert_equal 'Lorem ipsum', response['title']
   end
 
-  def test_success_stories_post
+  def test_stories_post_success
     post '/stories', { title: 'Funny title', url: 'http://www.funny.com' }.to_json
     response = JSON.parse last_response.body
 
@@ -51,7 +51,7 @@ class TestNynyApi < Minitest::Test
     assert_equal 'Funny title', response['title']
   end
 
-  def test_fail_stories_post
+  def test_stories_post_fail
     post '/stories', { title: 'Funny title' }.to_json
     response = JSON.parse last_response.body
 
